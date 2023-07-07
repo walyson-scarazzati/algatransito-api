@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algaworks.algatransito.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.model.StatusVeiculo;
@@ -21,6 +22,11 @@ public class RegistroVeiculoService {
 	
 	private final RegistroProprietarioService registroProprietarioService;
 
+	public Veiculo buscar(Long veiculoId) {
+		return veiculoRepository.findById(veiculoId)
+				.orElseThrow(()-> new EntidadeNaoEncontradaException("Veiculo não encontrado"));
+	}
+	
 	@Transactional
 	public Veiculo cadastrar(Veiculo veiculo) {
 		if(veiculo.getId() != null) {
