@@ -2,6 +2,7 @@ version: '3.4'
 services:
   db:
     image: mysql:8
+    container_name: mysql8
     command: mysqld --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
