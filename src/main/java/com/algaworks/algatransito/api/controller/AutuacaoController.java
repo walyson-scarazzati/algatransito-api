@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algatransito.api.assembler.AutuacaoAssembler;
 import com.algaworks.algatransito.api.model.AutuacaoModel;
+import com.algaworks.algatransito.api.model.openapi.controller.AutuacaoControllerOpenApi;
 import com.algaworks.algatransito.domain.model.Autuacao;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.model.input.AutuacaoInput;
@@ -25,7 +26,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/veiculos/{veiculoId}/autuacoes")
-public class AutuacaoController {
+public class AutuacaoController implements AutuacaoControllerOpenApi{
 
 	private final RegistroAutuacaoService registroAutuacaoService;
 	private final AutuacaoAssembler autuacaoAssembler;

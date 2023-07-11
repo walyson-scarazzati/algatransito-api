@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algatransito.api.assembler.VeiculoAssembler;
 import com.algaworks.algatransito.api.model.VeiculoModel;
+import com.algaworks.algatransito.api.model.openapi.controller.VeiculoControllerOpenApi;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.model.input.VeiculoInput;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
@@ -28,7 +29,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/veiculos")
-public class VeiculoController {
+public class VeiculoController implements VeiculoControllerOpenApi {
 	
 	private final VeiculoRepository veiculoRepository;
 	
