@@ -1,12 +1,26 @@
-FROM jenkins/jenkins:lts
-USER root
-RUN apt-get update -qq \
-    && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-RUN add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/debian \
-   $(lsb_release -cs) \
-   stable"
-RUN apt-get update  -qq \
-    && apt-get -y install docker-ce
-RUN usermod -aG docker jenkins
+# our base build image
+FROM maven:3.8.1-openjdk-17-slim as maven
+
+# copy the project files
+COPY ./pom.xml ./pom.xml
+
+# build all dependencies
+RUN mvn dependency:go-offline -B
+
+# copy your other files
+COPY ./src ./src
+
+# build for release
+RUN mvn package -DskipTests
+
+# our final base image
+FROM openjdk:17-oracle
+
+# set deployment directory
+WORKDIR /my-project
+
+# copy over the built artifact from the maven image
+COPY --from=maven target/algatransito-api-0.0.1-SNAPSHOT.jar ./
+
+# set the startup command to run your binary
+CMD ["java", "-jar", "./algatransito-api-0.0.1-SNAPSHOT.jar"]
